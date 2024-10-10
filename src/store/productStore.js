@@ -15,8 +15,15 @@ export const useProductStore = defineStore('product', {
             const addProductResponse = await axios.post(API_URL + 'products', product);
             this.products.push(addProductResponse.data);
         },
+        async findProductById(productId) {
+            const product = this.products.find(p => p.productId === productId);
+            if (!product) {
+                const productFound = await axios.get(API_URL + 'products' + productId);
+                this.products.push(productFound.data);
+            }
+        },
         async updateProduct(productId, updatedProduct) {
-            const updateProductResponse = await axios.put(API_URL + productId, updatedProduct);
+            const updateProductResponse = await axios.put(API_URL + 'products/' + productId, updatedProduct);
             const index = this.products.findIndex(p => p.productId === productId);
             this.products.splice(index, 1, updateProductResponse.data);
         }

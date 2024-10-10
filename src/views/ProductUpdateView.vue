@@ -1,7 +1,8 @@
 <script setup>
   import {useProductStore} from "@/store/productStore";
   import {useRoute} from "vue-router";
-  import {computed, ref, watch} from "vue";
+  import {computed, onMounted, ref, watch} from "vue";
+  import router from "@/router";
 
   const productStore = useProductStore();
   const route = useRoute();
@@ -9,6 +10,10 @@
   //todo: check if you can use id as string for put request
   const productId = computed(() => parseInt(route.params.productId));
   const product = computed(() => productStore.products.find(p => p.productId === productId.value));
+
+  onMounted(() => {
+      productStore.findProductById(productId.value);
+  })
 
   const title = ref('');
   const description = ref('');
@@ -21,12 +26,13 @@
   imageUrl.value = product.value.imageUrl;
 
   function update() {
-      productStore.updateProduct(productId, {
+      productStore.updateProduct(productId.value, {
           title: title.value,
           description: description.value,
           price: price.value,
           imageUrl: imageUrl.value
       })
+      router.push('/');
   }
 
 </script>
