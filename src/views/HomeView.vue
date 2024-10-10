@@ -2,8 +2,10 @@
 import {useProductStore} from "@/store/productStore";
 import {onMounted} from "vue";
 import Product from "@/components/Product.vue";
+import {useAuthStore} from "@/store/authStore";
 
-const productStore = useProductStore()
+const productStore = useProductStore();
+const authStore = useAuthStore();
 
 onMounted(() => {
     productStore.loadProducts()
@@ -18,6 +20,7 @@ onMounted(() => {
     <v-row>
         <v-col cols="4" v-for="p in productStore.products">
             <Product :product="p"/>
+            <v-btn :to="'/' + p.productId" v-if="authStore.isAdmin">Produkt bearbeiten</v-btn>
         </v-col>
     </v-row>
 </template>

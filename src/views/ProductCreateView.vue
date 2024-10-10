@@ -3,13 +3,6 @@
   import {useProductStore} from "@/store/productStore";
   import router from "@/router";
 
-  const requiredRule = value => !!value || 'This field is required';
-  const numberRule = value => {
-      // Ensure the value is a number
-      const numberValue = parseFloat(value);
-      return !isNaN(numberValue) && numberValue > 0 || 'Must be a valid positive number';
-  };
-
   const title = ref('');
   const description = ref('');
   const price = ref(null);

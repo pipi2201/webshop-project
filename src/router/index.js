@@ -7,6 +7,7 @@ import HomeView from '@/views/HomeView.vue'
 import BasketView from '@/views/BasketView.vue'
 import ProductCreateView from '@/views/ProductCreateView.vue'
 import { useAuthStore } from '@/store/authStore'
+import ProductUpdateView from "@/views/ProductUpdateView.vue";
 
 const routes = [
     {
@@ -35,6 +36,17 @@ const routes = [
             {
                 path: 'new-product',
                 component: ProductCreateView,
+                beforeEnter() {
+                    const authStore = useAuthStore()
+                    if(!authStore.isAdmin) {
+                        return '/' // Wenn der Benutzer nicht eingeloggt ist oder ein Kunde ist, wird er auf die Startseite weitergeleitet
+                    }
+                    return true
+                }
+            },
+            {
+                path: ':productId',
+                component: ProductUpdateView,
                 beforeEnter() {
                     const authStore = useAuthStore()
                     if(!authStore.isAdmin) {
