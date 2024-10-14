@@ -4,11 +4,17 @@ import {onMounted, ref} from "vue";
 import Product from "@/components/Product.vue";
 import {useAuthStore} from "@/store/authStore";
 import router from "@/router";
+import {useCartStore} from "@/store/cartStore";
 
 const productStore = useProductStore();
 const authStore = useAuthStore();
+const cartStore = useCartStore();
 const modalVisible = ref(false);
 const productIdForDelete = ref('');
+const productIdForAddToBasket = ref('');
+const basketModalVisible = ref(false);
+const remark = ref('');
+const quantity = ref(null);
 
 onMounted(() => {
     productStore.loadProducts()
@@ -19,10 +25,23 @@ function openModal(productId) {
     productIdForDelete.value = productId;
 }
 
+function openBasketModal(productId) {
+    basketModalVisible.value = !basketModalVisible.value;
+    productIdForAddToBasket.value = productId;
+}
+
 function deleteProduct() {
     productStore.deleteProduct(productIdForDelete.value);
     modalVisible.value = false;
-    router.push('/')
+}
+
+function addToBasket() {
+    cartStore.addProductToBasket({
+        productId: productIdForAddToBasket.value,
+        amount: parseInt(quantity.value),
+        remark: remark.value
+    });
+    basketModalVisible.value = false;
 }
 
 </script>
@@ -37,16 +56,40 @@ function deleteProduct() {
             <Product :product="p"/>
             <v-btn :to="'/' + p.productId" v-if="authStore.isAdmin">Produkt bearbeiten</v-btn>
             <v-btn v-if="authStore.isAdmin" @click="openModal(p.productId)">Produkt löschen</v-btn>
+            <v-btn v-if="authStore.isUser" @click="openBasketModal(p.productId)">zum Warenkorb hinzufügen</v-btn>
         </v-col>
     </v-row>
 
-    <v-dialog v-model="modalVisible" max-width="200px">
+    <v-dialog v-model="modalVisible" max-width="300px">
         <v-card>
             <v-card-title>Delete Product</v-card-title>
             <v-card-text>Are you sure you wanna delete this product?</v-card-text>
             <v-card-actions>
                 <v-btn @click="deleteProduct">Yes</v-btn>
                 <v-btn @click="openModal">No</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+    <v-dialog v-model="basketModalVisible" max-width="300px">
+        <v-card>
+            <v-card-title>Zum Warenkorb hinzufügen</v-card-title>
+            <v-card-text>
+                <v-text-field
+                    v-model="remark"
+                    type="text"
+                    hide-details="auto"
+                    label="Comment"
+                ></v-text-field>
+                <v-text-field
+                    v-model="quantity"
+                    type="number"
+                    hide-details="auto"
+                    label="Quantity"
+                ></v-text-field>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn @click="addToBasket">Add</v-btn>
+                <v-btn @click="openBasketModal">Close</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
