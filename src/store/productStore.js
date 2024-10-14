@@ -26,6 +26,12 @@ export const useProductStore = defineStore('product', {
             const updateProductResponse = await axios.put(API_URL + 'products/' + productId, updatedProduct);
             const index = this.products.findIndex(p => p.productId === productId);
             this.products.splice(index, 1, updateProductResponse.data);
+        },
+        async deleteProduct(productId) {
+            const deleteProductResponse = await axios.delete(API_URL + 'products/' + productId);
+            console.log(deleteProductResponse);
+            const index = this.products.findIndex(p => p.productId === productId);
+            this.products.splice(index, 1);
         }
     }
 })
