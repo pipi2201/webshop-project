@@ -1,15 +1,27 @@
 <script setup>
 import { useAuthStore } from '@/store/authStore'
 import {useCartStore} from "@/store/cartStore";
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
+const itemAmount = ref(0);
+//watcher to check if itemAmount has changed
+//todo: check commented code, from chatgpt
+// Dynamically calculate itemAmount from the store's cart data
+// const itemAmount = computed(() => {
+//     return cartStore.cart.items.reduce((total, item) => {
+//         return total + item.price * item.quantity;
+//     }, 0);
 
-//todo: either computed or onmounted? crashes when reloaded
-//itemAmount must be 0 if not filled
-// const itemAmount = ref(cartStore.carts.items.length);
-// console.log(itemAmount.value);
+function showConsoleLog() {
+    console.log(cartStore.cart.items.length);
+}
+
+onMounted(() => {
+     cartStore.loadItems();
+ });
+
 </script>
 <template>
     <v-app-bar color="primary">
@@ -27,6 +39,7 @@ const cartStore = useCartStore();
             <v-btn to="/new-product" v-if="authStore.isAdmin">Produkt anlegen</v-btn>
             <template v-if="authStore.isLoggedIn">
                 <v-btn @click="authStore.logout">Logout</v-btn>
+                <v-btn @click="showConsoleLog">test</v-btn>
             </template>
             <template v-else>
                 <v-btn to="/login">Login</v-btn>

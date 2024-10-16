@@ -3,7 +3,6 @@ import {useProductStore} from "@/store/productStore";
 import {onMounted, ref} from "vue";
 import Product from "@/components/Product.vue";
 import {useAuthStore} from "@/store/authStore";
-import router from "@/router";
 import {useCartStore} from "@/store/cartStore";
 
 const productStore = useProductStore();
@@ -14,7 +13,7 @@ const productIdForDelete = ref('');
 const productIdForAddToBasket = ref('');
 const basketModalVisible = ref(false);
 const remark = ref('');
-const quantity = ref(null);
+const quantity = ref('1');
 
 onMounted(() => {
     productStore.loadProducts()
@@ -41,6 +40,9 @@ function addToBasket() {
         amount: parseInt(quantity.value),
         remark: remark.value
     });
+    productIdForAddToBasket.value = '';
+    quantity.value = null;
+    remark.value = '';
     basketModalVisible.value = false;
 }
 
