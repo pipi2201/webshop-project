@@ -5,30 +5,32 @@ import {computed, onMounted, ref} from "vue";
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
-const itemAmount = ref(0);
+// const itemAmount = ref(0);
 //watcher to check if itemAmount has changed
 //todo: check commented code, from chatgpt
 // Dynamically calculate itemAmount from the store's cart data
-// const itemAmount = computed(() => {
-//     return cartStore.cart.items.reduce((total, item) => {
-//         return total + item.price * item.quantity;
-//     }, 0);
-
-function showConsoleLog() {
-    console.log(cartStore.cart.items.length);
-}
-
+const itemAmount = computed(() => {
+    return cartStore.cart.items.reduce((total, item) => {
+        const quantity = (item.amount) || 0;
+        console.log(quantity);
+        return total + quantity;
+    }, 0);
+})
 onMounted(() => {
-     cartStore.loadItems();
- });
+    cartStore.loadItems()
+});
+
+// function showConsoleLog() {
+//     console.log(parseInt(cartStore.cart.items[1].amount));
+// }
 
 </script>
 <template>
     <v-app-bar color="primary">
         <v-app-bar-title>Authentication Demo</v-app-bar-title>
         <v-toolbar-items>
-            <v-btn color="orange">{{itemAmount}}
-                <v-icon v-if="authStore.isUser"
+            <v-btn to="/basket" v-if="authStore.isUser" color="orange">{{itemAmount}}
+                <v-icon
                 icon="mdi-cart"
                 color="orange"
                 size="1.8em"
@@ -39,7 +41,8 @@ onMounted(() => {
             <v-btn to="/new-product" v-if="authStore.isAdmin">Produkt anlegen</v-btn>
             <template v-if="authStore.isLoggedIn">
                 <v-btn @click="authStore.logout">Logout</v-btn>
-                <v-btn @click="showConsoleLog">test</v-btn>
+<!--                test button for consol log-->
+<!--                <v-btn @click="showConsoleLog">test</v-btn>-->
             </template>
             <template v-else>
                 <v-btn to="/login">Login</v-btn>
