@@ -12,10 +12,10 @@ onMounted(() => {
     productStore.loadProducts();
 })
 
-const total = computed(() => {
+const total = computed( () => {
     return cartStore.cart?.items.reduce((total, item) => {
         const product = productStore.products.find(p => p.productId === item.productId)
-        return total += parseInt(item.amount) * parseInt(product.price);
+        return total + parseInt(item.amount) * parseInt(product?.price ?? 0);
     }, 0)
 })
 

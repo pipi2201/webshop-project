@@ -1,6 +1,6 @@
 <script setup>
 import {useProductStore} from "@/store/productStore";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import Product from "@/components/Product.vue";
 import {useAuthStore} from "@/store/authStore";
 import {useCartStore} from "@/store/cartStore";
@@ -10,10 +10,11 @@ const authStore = useAuthStore();
 const cartStore = useCartStore();
 const modalVisible = ref(false);
 const productIdForDelete = ref('');
-const productIdForAddToBasket = ref('');
+const productIdForAddToBasket = ref(0);
 const basketModalVisible = ref(false);
 const remark = ref('');
-const quantity = ref('1');
+const quantity = ref(1);
+// const productObj = ref({});
 
 onMounted(() => {
     productStore.loadProducts()
@@ -37,14 +38,16 @@ function deleteProduct() {
 function addToBasket() {
     cartStore.addProductToBasket({
         productId: productIdForAddToBasket.value,
-        amount: parseInt(quantity.value),
+        amount: quantity.value,
         remark: remark.value
     });
-    productIdForAddToBasket.value = '';
-    quantity.value = null;
-    remark.value = '';
     basketModalVisible.value = false;
 }
+
+// watch(productObj, () => {
+//     quantity.value = productObj.value.amount;
+//     remark.value = productObj.value.remark
+// }, {immediate: true});
 
 </script>
 
@@ -83,7 +86,7 @@ function addToBasket() {
                     label="Comment"
                 ></v-text-field>
                 <v-text-field
-                    v-model="quantity"
+                    v-model.number="quantity"
                     type="number"
                     hide-details="auto"
                     label="Quantity"
