@@ -4,7 +4,7 @@ import {API_URL} from "@/api";
 
 export const useCartStore = defineStore('cart', {
     state: () => ({
-        cart: {}
+        cart: null
     }),
     actions: {
         async addProductToBasket(cartProduct) {

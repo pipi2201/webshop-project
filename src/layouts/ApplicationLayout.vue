@@ -5,24 +5,22 @@ import {computed, onMounted, ref} from "vue";
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
-// const itemAmount = ref(0);
-//watcher to check if itemAmount has changed
-//todo: check commented code, from chatgpt
+
+onMounted(() => {
+    cartStore.loadItems()
+});
 // Dynamically calculate itemAmount from the store's cart data
 const itemAmount = computed(() => {
-    return cartStore.cart.items.reduce((total, item) => {
+    return cartStore.cart?.items.reduce((total, item) => {
         const quantity = (item.amount) || 0;
         console.log(quantity);
         return total + quantity;
     }, 0);
 })
-onMounted(() => {
-    cartStore.loadItems()
-});
 
-// function showConsoleLog() {
-//     console.log(parseInt(cartStore.cart.items[1].amount));
-// }
+function showConsoleLog() {
+    console.log(parseInt(cartStore.cart.items[0].amount));
+}
 
 </script>
 <template>
@@ -41,8 +39,7 @@ onMounted(() => {
             <v-btn to="/new-product" v-if="authStore.isAdmin">Produkt anlegen</v-btn>
             <template v-if="authStore.isLoggedIn">
                 <v-btn @click="authStore.logout">Logout</v-btn>
-<!--                test button for consol log-->
-<!--                <v-btn @click="showConsoleLog">test</v-btn>-->
+                <v-btn @click="showConsoleLog">test</v-btn>
             </template>
             <template v-else>
                 <v-btn to="/login">Login</v-btn>
