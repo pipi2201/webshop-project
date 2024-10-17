@@ -14,7 +14,6 @@ const productIdForAddToBasket = ref(0);
 const basketModalVisible = ref(false);
 const remark = ref('');
 const quantity = ref(1);
-// const productObj = ref({});
 
 onMounted(() => {
     productStore.loadProducts()
@@ -43,12 +42,6 @@ function addToBasket() {
     });
     basketModalVisible.value = false;
 }
-
-// watch(productObj, () => {
-//     quantity.value = productObj.value.amount;
-//     remark.value = productObj.value.remark
-// }, {immediate: true});
-
 </script>
 
 <template>

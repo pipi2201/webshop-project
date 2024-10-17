@@ -18,7 +18,7 @@ export const useCartStore = defineStore('cart', {
             this.cart = productResponse.data;
         },
         async updateCartItem(item, itemId) {
-            const productResponse = await axios.put(API_URL + 'baskets/item/' + itemId);
+            const productResponse = await axios.put(API_URL + 'baskets/item/' + itemId, item);
             this.cart = productResponse.data;
         }
     }
