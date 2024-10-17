@@ -26,7 +26,7 @@
 
         <v-card-text class="bg-surface-light pt-4">
             <p>Description: {{product.description}}</p>
-            <p>Price: {{product.price}}</p>
+            <p>Price: {{product.price}}€</p>
         </v-card-text>
     </v-card>
 </template>

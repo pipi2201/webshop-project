@@ -18,9 +18,9 @@ const itemAmount = computed(() => {
     }, 0);
 })
 
-function showConsoleLog() {
-    console.log(parseInt(cartStore.cart.items[0].amount));
-}
+// function showConsoleLog() {
+//     console.log(parseInt(cartStore.cart.items[0].amount));
+// }
 
 </script>
 <template>
@@ -35,11 +35,10 @@ function showConsoleLog() {
                 >
                 </v-icon>
             </v-btn>
-            <v-btn to="/basket" v-if="authStore.isUser">Warenkorb</v-btn>
             <v-btn to="/new-product" v-if="authStore.isAdmin">Produkt anlegen</v-btn>
             <template v-if="authStore.isLoggedIn">
                 <v-btn @click="authStore.logout">Logout</v-btn>
-                <v-btn @click="showConsoleLog">test</v-btn>
+<!--                <v-btn @click="showConsoleLog">test</v-btn>-->
             </template>
             <template v-else>
                 <v-btn to="/login">Login</v-btn>
