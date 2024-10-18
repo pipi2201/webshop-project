@@ -20,8 +20,12 @@ export const useCartStore = defineStore('cart', {
             this.cart = productResponse.data;
         },
         async deleteItem(item, itemId) {
-            const productResponse =await axios.delete(API_URL + 'baskets/item/' + itemId);
+            const productResponse = await axios.delete(API_URL + 'baskets/item/' + itemId);
             this.cart = this.loadItems();
+        },
+        async addOrder(order) {
+            const productResponse = await axios.put(API_URL + 'baskets');
+            this.cart = productResponse.data;
         }
     }
 });
