@@ -11,12 +11,12 @@ onMounted(() => {
 });
 // Dynamically calculate itemAmount from the store's cart data
 const itemAmount = computed(() => {
-    return cartStore.cart?.items.reduce((total, item) => {
+    return cartStore.cart?.items?.reduce((total, item) => {
         const quantity = (item.amount) || 0;
         console.log(quantity);
         return total + quantity;
     }, 0);
-})
+});
 
 // function showConsoleLog() {
 //     console.log(parseInt(cartStore.cart.items[0].amount));

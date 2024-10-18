@@ -16,6 +16,7 @@ const product = computed(() => {
 const basketModalVisible = ref(false);
 const quantity = ref(1);
 const remark = ref('');
+const modalVisible = ref(false);
 
 onMounted(() => {
     productStore.loadProducts();
@@ -26,16 +27,30 @@ function openModal() {
     basketModalVisible.value = !basketModalVisible.value;
 }
 
+function openDeleteModal() {
+    modalVisible.value = !modalVisible.value;
+}
+
 function updateItem() {
     cartStore.updateCartItem({
-        productId: product.productId,
         amount: quantity.value,
         remark: remark.value
-    }, product.productId);
+    }, product.value.productId);
     basketModalVisible.value = false;
 }
-</script>
 
+function deleteCartItem() {
+    cartStore.deleteItem(product, product.value.productId);
+    modalVisible.value = false;
+}
+//images for products
+//https://plus.unsplash.com/premium_photo-1728643592445-012fc53c3ea2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1MHx8fGVufDB8fHx8fA%3D%3D
+//https://images.unsplash.com/photo-1728935367997-d9dd04a4d447?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw4fHx8ZW58MHx8fHx8
+
+</script>
+//images for products
+//https://plus.unsplash.com/premium_photo-1728643592445-012fc53c3ea2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1MHx8fGVufDB8fHx8fA%3D%3D
+//https://images.unsplash.com/photo-1728935367997-d9dd04a4d447?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw4fHx8ZW58MHx8fHx8
 <template>
     <v-card
         class="mx-auto ma-2"
@@ -55,6 +70,7 @@ function updateItem() {
             <p>Quantity: {{item.amount}}</p>
         </v-card-text>
         <v-btn @click="openModal">Bearbeiten</v-btn>
+        <v-btn @click="openDeleteModal">Löschen</v-btn>
     </v-card>
     <v-dialog v-model="basketModalVisible" max-width="300px">
         <v-card>
@@ -76,6 +92,16 @@ function updateItem() {
             <v-card-actions>
                 <v-btn @click="updateItem">Add</v-btn>
                 <v-btn @click="openModal">Close</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+    <v-dialog v-model="modalVisible" max-width="300px">
+        <v-card>
+            <v-card-title>Delete Product</v-card-title>
+            <v-card-text>Are you sure you wanna throw this product out of your cart?</v-card-text>
+            <v-card-actions>
+                <v-btn @click="deleteCartItem">Yes</v-btn>
+                <v-btn @click="openDeleteModal">No</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
