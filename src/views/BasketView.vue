@@ -31,4 +31,6 @@ const total = computed( () => {
         </v-col>
     </v-row>
     <h3>Gesamtpreis: {{total}}€</h3>
+    <v-btn to="/Order">Bezahlen</v-btn>
+    <v-btn @click="">Warenkorb Löschen</v-btn>
 </template>

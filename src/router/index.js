@@ -8,6 +8,7 @@ import BasketView from '@/views/BasketView.vue'
 import ProductCreateView from '@/views/ProductCreateView.vue'
 import { useAuthStore } from '@/store/authStore'
 import ProductUpdateView from "@/views/ProductUpdateView.vue";
+import OrderView from "@/views/OrderView.vue";
 
 const routes = [
     {
@@ -51,6 +52,17 @@ const routes = [
                     const authStore = useAuthStore()
                     if(!authStore.isAdmin) {
                         return '/' // Wenn der Benutzer nicht eingeloggt ist oder ein Kunde ist, wird er auf die Startseite weitergeleitet
+                    }
+                    return true
+                }
+            },
+            {
+                path: 'order',
+                component: OrderView,
+                beforeEnter() {
+                    const authStore = useAuthStore()
+                    if (!authStore.isUser) {
+                        return '/'
                     }
                     return true
                 }
