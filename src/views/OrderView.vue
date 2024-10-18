@@ -1,8 +1,36 @@
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
+import {useCartStore} from "@/store/cartStore";
 
-const showDeliveryAdress = ref(true);
+const cartStore = useCartStore();
+
+const showDeliveryAddress = ref(true);
 const selectedBtn = ref('delivery');
+const invoiceAddress = ref({
+    street: '',
+    number: '',
+    zip: '',
+    city: '',
+    country: ''
+})
+
+const deliveryAddress = ref({
+    street: '',
+    number: '',
+    zip: '',
+    city: '',
+    country: ''
+})
+
+//todo: second watcher and v-model naming
+watch(invoiceAddress, () => {
+    invoiceAddress.value.street = cartStore.cart.invoiceAddress.street;
+    invoiceAddress.value.number = cartStore.cart.invoiceAddress.number;
+    invoiceAddress.value.zip = cartStore.cart.invoiceAddress.zip;
+    invoiceAddress.value.city = cartStore.cart.invoiceAddress.city;
+    invoiceAddress.value.country = cartStore.cart.invoiceAddress.country;
+}, {immediate: true});
+
 
 function deliver() {
     showDeliveryAdress.value = true;
@@ -27,59 +55,48 @@ function pickup() {
     <v-form @submit.prevent>
         <h2>Rechnungsadresse</h2>
         <v-text-field
-            v-model="street"
-            :rules="rules"
-            label="Street"
-        ></v-text-field>
-        <v-text-field
-        v-model="number"
-        :rules="rules"
-        label="Number"
-        ></v-text-field>
-        <v-text-field
-            v-model="zip"
-            :rules="rules"
-            label="ZIP"
-        ></v-text-field>
-        <v-text-field
-            v-model="city"
-            :rules="rules"
-            label="City"
-        ></v-text-field>
-        <v-text-field
-            v-model="country"
-            :rules="rules"
-            label="Country"
-        ></v-text-field>
-        <v-btn class="mt-2" type="submit" block>Submit</v-btn>
-    </v-form>
-    <v-form v-if="showDeliveryAdress" @submit.prevent class="mt-10">
-        <h2>Lieferadresse</h2>
-        <v-text-field
-            v-model="street"
-            :rules="rules"
+            v-model="invoiceAddress.street"
             label="Street"
         ></v-text-field>
         <v-text-field
             v-model="number"
-            :rules="rules"
             label="Number"
         ></v-text-field>
         <v-text-field
             v-model="zip"
-            :rules="rules"
             label="ZIP"
         ></v-text-field>
         <v-text-field
             v-model="city"
-            :rules="rules"
             label="City"
         ></v-text-field>
         <v-text-field
             v-model="country"
-            :rules="rules"
             label="Country"
         ></v-text-field>
+        <div v-if="showDeliveryAdress">
+            <h2 class="mt-10">Lieferadresse</h2>
+            <v-text-field
+                v-model="street2"
+                label="Street"
+            ></v-text-field>
+            <v-text-field
+                v-model="number2"
+                label="Number"
+            ></v-text-field>
+            <v-text-field
+                v-model="zip2"
+                label="ZIP"
+            ></v-text-field>
+            <v-text-field
+                v-model="city2"
+                label="City"
+            ></v-text-field>
+            <v-text-field
+                v-model="country2"
+                label="Country"
+            ></v-text-field>
+        </div>
         <v-btn class="mt-2" type="submit" block>Submit</v-btn>
     </v-form>
 </template>
