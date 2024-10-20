@@ -9,6 +9,7 @@ import ProductCreateView from '@/views/ProductCreateView.vue'
 import { useAuthStore } from '@/store/authStore'
 import ProductUpdateView from "@/views/ProductUpdateView.vue";
 import OrderView from "@/views/OrderView.vue";
+import ThankYouView from "@/views/ThankYouView.vue"
 
 const routes = [
     {
@@ -59,6 +60,17 @@ const routes = [
             {
                 path: 'order',
                 component: OrderView,
+                beforeEnter() {
+                    const authStore = useAuthStore()
+                    if (!authStore.isUser) {
+                        return '/'
+                    }
+                    return true
+                }
+            },
+            {
+                path: 'thanks',
+                component: ThankYouView,
                 beforeEnter() {
                     const authStore = useAuthStore()
                     if (!authStore.isUser) {

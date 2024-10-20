@@ -7,9 +7,12 @@ export const useCartStore = defineStore('cart', {
         cart: null
     }),
     actions: {
+        //todo: check if working!
         async addProductToBasket(cartProduct) {
+            console.log(cartProduct)
             const productResponse = await axios.post(API_URL + 'baskets/item', cartProduct);
             this.cart = productResponse.data;
+            console.log(productResponse.data);
         },
         async loadItems() {
             const productResponse = await axios.get(API_URL + 'baskets');
@@ -25,6 +28,7 @@ export const useCartStore = defineStore('cart', {
         },
         async addOrder(order) {
             const productResponse = await axios.put(API_URL + 'baskets');
+            console.log(productResponse.data);
             this.cart = productResponse.data;
         }
     }

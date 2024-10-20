@@ -1,11 +1,9 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
 import {useCartStore} from "@/store/cartStore";
+import router from "@/router";
 
 const cartStore = useCartStore();
-onMounted(() => {
-    cartStore.loadItems();
-})
 
 const showDeliveryAddress = ref(true);
 const selectedOption = ref('delivery');
@@ -25,22 +23,39 @@ const deliveryAddress = ref({
     country: ''
 })
 
-watch(invoiceAddress, () => {
-    console.log(invoiceAddress);
-    invoiceAddress.value.street = cartStore.cart?.invoiceAddress?.street;
-    invoiceAddress.value.number = cartStore.cart?.invoiceAddress?.number;
-    invoiceAddress.value.zip = cartStore.cart?.invoiceAddress?.zip;
-    invoiceAddress.value.city = cartStore.cart?.invoiceAddress?.city;
-    invoiceAddress.value.country = cartStore.cart?.invoiceAddress?.country;
-}, {immediate: true});
+//TODO: prefill out adress - maybe not in onmounted funct?
+onMounted(() => {
+    cartStore.loadItems();
 
-watch(deliveryAddress, () => {
-    deliveryAddress.value.street = cartStore.cart?.deliveryAddress?.street;
-    deliveryAddress.value.number = cartStore.cart?.deliveryAddress?.number;
-    deliveryAddress.value.zip = cartStore.cart?.deliveryAddress?.zip;
-    deliveryAddress.value.city = cartStore.cart?.deliveryAddress?.city;
-    deliveryAddress.value.country = cartStore.cart?.deliveryAddress?.country;
-}, {immediate: true});
+    watch(() => cartStore.cart?.invoiceAddress, (newInvoiceAddress) => {
+        if (newInvoiceAddress) {
+            invoiceAddress.value = { ...newInvoiceAddress }; // Replace the whole object
+        }
+    }, { immediate: true });
+
+    watch(() => cartStore.cart?.deliveryAddress, (newDeliveryAddress) => {
+        if (newDeliveryAddress) {
+            deliveryAddress.value = { ...newDeliveryAddress }; // Replace the whole object
+        }
+    }, { immediate: true });
+
+    // watch(invoiceAddress, () => {
+    //     console.log(invoiceAddress);
+    //     invoiceAddress.value.street = cartStore.cart?.invoiceAddress?.street;
+    //     invoiceAddress.value.number = cartStore.cart?.invoiceAddress?.number;
+    //     invoiceAddress.value.zip = cartStore.cart?.invoiceAddress?.zip;
+    //     invoiceAddress.value.city = cartStore.cart?.invoiceAddress?.city;
+    //     invoiceAddress.value.country = cartStore.cart?.invoiceAddress?.country;
+    // }, {immediate: true});
+    //
+    // watch(deliveryAddress, () => {
+    //     deliveryAddress.value.street = cartStore.cart?.deliveryAddress?.street;
+    //     deliveryAddress.value.number = cartStore.cart?.deliveryAddress?.number;
+    //     deliveryAddress.value.zip = cartStore.cart?.deliveryAddress?.zip;
+    //     deliveryAddress.value.city = cartStore.cart?.deliveryAddress?.city;
+    //     deliveryAddress.value.country = cartStore.cart?.deliveryAddress?.country;
+    // }, {immediate: true});
+})
 
 function deliver() {
     showDeliveryAddress.value = true;
@@ -56,6 +71,7 @@ function sendAddresses() {
         deliveryAddress: deliveryAddress.value,
         shippingType: selectedOption.value
     });
+    router.push('thanks');
     console.log("SENT");
 }
 

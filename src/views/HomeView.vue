@@ -9,34 +9,37 @@ const productStore = useProductStore();
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const modalVisible = ref(false);
-const productIdForDelete = ref('');
-const productIdForAddToBasket = ref(0);
+const Id = ref(null);
 const basketModalVisible = ref(false);
 const remark = ref('');
 const quantity = ref(1);
 
 onMounted(() => {
-    productStore.loadProducts()
+    productStore.loadProducts();
+    console.log(authStore.isUser)
+    if (authStore.isUser) {
+        cartStore.loadItems();
+    }
 })
 
 function openModal(productId) {
     modalVisible.value = !modalVisible.value;
-    productIdForDelete.value = productId;
+    Id.value = productId;
 }
 
 function openBasketModal(productId) {
     basketModalVisible.value = !basketModalVisible.value;
-    productIdForAddToBasket.value = productId;
+    Id.value = productId;
 }
 
 function deleteProduct() {
-    productStore.deleteProduct(productIdForDelete.value);
+    productStore.deleteProduct(Id.value);
     modalVisible.value = false;
 }
 
 function addToBasket() {
     cartStore.addProductToBasket({
-        productId: productIdForAddToBasket.value,
+        productId: Id.value,
         amount: quantity.value,
         remark: remark.value
     });
@@ -58,7 +61,7 @@ function addToBasket() {
         </v-col>
     </v-row>
 
-    <v-dialog v-model="modalVisible" max-width="300px">
+    <v-dialog v-if="authStore.isAdmin" v-model="modalVisible" max-width="300px">
         <v-card>
             <v-card-title>Delete Product</v-card-title>
             <v-card-text>Are you sure you wanna delete this product?</v-card-text>
@@ -68,7 +71,7 @@ function addToBasket() {
             </v-card-actions>
         </v-card>
     </v-dialog>
-    <v-dialog v-model="basketModalVisible" max-width="300px">
+    <v-dialog v-if="authStore.isUser" v-model="basketModalVisible" max-width="300px">
         <v-card>
             <v-card-title>Zum Warenkorb hinzufügen</v-card-title>
             <v-card-text>

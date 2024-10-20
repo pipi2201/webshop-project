@@ -7,16 +7,19 @@ const authStore = useAuthStore();
 const cartStore = useCartStore();
 
 onMounted(() => {
-    cartStore.loadItems()
+    if (authStore.isUser) {
+        cartStore.loadItems()
+    }
 });
+
 // Dynamically calculate itemAmount from the store's cart data
-const itemAmount = computed(() => {
-    return cartStore.cart?.items?.reduce((total, item) => {
-        const quantity = (item.amount) || 0;
-        console.log(quantity);
-        return total + quantity;
-    }, 0);
-});
+    const itemAmount = computed(() => {
+        return cartStore.cart?.items?.reduce((total, item) => {
+            const quantity = (item.amount) || 0;
+            console.log(quantity);
+            return total + quantity;
+        }, 0);
+    });
 
 // function showConsoleLog() {
 //     console.log(parseInt(cartStore.cart.items[0].amount));
