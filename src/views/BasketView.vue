@@ -19,6 +19,10 @@ const total = computed( () => {
     }, 0)
 })
 
+function deleteAll() {
+    cartStore.deleteBasket();
+}
+
 </script>
 <template>
     <h1>Warenkorb</h1>
@@ -32,5 +36,5 @@ const total = computed( () => {
     </v-row>
     <h3>Gesamtpreis: {{total}}€</h3>
     <v-btn to="/Order">Bezahlen</v-btn>
-    <v-btn @click="">Warenkorb Löschen</v-btn>
+    <v-btn @click="deleteAll">Warenkorb Löschen</v-btn>
 </template>

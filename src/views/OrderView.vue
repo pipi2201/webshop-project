@@ -23,11 +23,11 @@ const deliveryAddress = ref({
     country: ''
 })
 
-//TODO: prefill out adress - maybe not in onmounted funct?
 onMounted(() => {
     cartStore.loadItems();
 
     watch(() => cartStore.cart?.invoiceAddress, (newInvoiceAddress) => {
+        console.log(cartStore.cart?.invoiceAddress);
         if (newInvoiceAddress) {
             invoiceAddress.value = { ...newInvoiceAddress }; // Replace the whole object
         }
@@ -38,23 +38,6 @@ onMounted(() => {
             deliveryAddress.value = { ...newDeliveryAddress }; // Replace the whole object
         }
     }, { immediate: true });
-
-    // watch(invoiceAddress, () => {
-    //     console.log(invoiceAddress);
-    //     invoiceAddress.value.street = cartStore.cart?.invoiceAddress?.street;
-    //     invoiceAddress.value.number = cartStore.cart?.invoiceAddress?.number;
-    //     invoiceAddress.value.zip = cartStore.cart?.invoiceAddress?.zip;
-    //     invoiceAddress.value.city = cartStore.cart?.invoiceAddress?.city;
-    //     invoiceAddress.value.country = cartStore.cart?.invoiceAddress?.country;
-    // }, {immediate: true});
-    //
-    // watch(deliveryAddress, () => {
-    //     deliveryAddress.value.street = cartStore.cart?.deliveryAddress?.street;
-    //     deliveryAddress.value.number = cartStore.cart?.deliveryAddress?.number;
-    //     deliveryAddress.value.zip = cartStore.cart?.deliveryAddress?.zip;
-    //     deliveryAddress.value.city = cartStore.cart?.deliveryAddress?.city;
-    //     deliveryAddress.value.country = cartStore.cart?.deliveryAddress?.country;
-    // }, {immediate: true});
 })
 
 function deliver() {
@@ -65,18 +48,15 @@ function pickup() {
     showDeliveryAddress.value = false;
 }
 
-function sendAddresses() {
-    cartStore.addOrder({
-        invoiceAddress: invoiceAddress.value,
-        deliveryAddress: deliveryAddress.value,
+async function sendAddressesAndOrder() {
+    await cartStore.putOrderInCart({
+        invoiceAddress: {...invoiceAddress.value},
+        deliveryAddress: {...deliveryAddress.value},
         shippingType: selectedOption.value
     });
+    await cartStore.loadItems();
+    await cartStore.sendOrderOut();
     router.push('thanks');
-    console.log("SENT");
-}
-
-function test() {
-    console.log(selectedOption.value);
 }
 </script>
 <template>
@@ -91,19 +71,18 @@ function test() {
             </v-col>
         </v-row>
     </v-radio-group>
-    <v-btn @click="test">test</v-btn>
-    <v-form @submit.prevent="sendAddresses">
+    <v-form @submit.prevent="sendAddressesAndOrder">
         <h2>Rechnungsadresse</h2>
         <v-text-field
             v-model="invoiceAddress.street"
             label="Street"
         ></v-text-field>
         <v-text-field
-            v-model="invoiceAddress.number"
+            v-model.number="invoiceAddress.number"
             label="Number"
         ></v-text-field>
         <v-text-field
-            v-model="invoiceAddress.zip"
+            v-model.number="invoiceAddress.zip"
             label="ZIP"
         ></v-text-field>
         <v-text-field
@@ -121,11 +100,11 @@ function test() {
                 label="Street"
             ></v-text-field>
             <v-text-field
-                v-model="deliveryAddress.number"
+                v-model.number="deliveryAddress.number"
                 label="Number"
             ></v-text-field>
             <v-text-field
-                v-model="deliveryAddress.zip"
+                v-model.number="deliveryAddress.zip"
                 label="ZIP"
             ></v-text-field>
             <v-text-field
