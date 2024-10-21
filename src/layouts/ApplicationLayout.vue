@@ -27,8 +27,8 @@ onMounted(() => {
 
 </script>
 <template>
-    <v-app-bar color="primary">
-        <v-app-bar-title>Authentication Demo</v-app-bar-title>
+    <v-app-bar class="bg-deep-purple-darken-3">
+        <v-app-bar-title>Pipi's WebShop</v-app-bar-title>
         <v-toolbar-items>
             <v-btn to="/basket" v-if="authStore.isUser" color="orange">{{itemAmount}}
                 <v-icon
@@ -38,19 +38,19 @@ onMounted(() => {
                 >
                 </v-icon>
             </v-btn>
-            <v-btn to="/new-product" v-if="authStore.isAdmin">Produkt anlegen</v-btn>
+            <v-btn to="/new-product" v-if="authStore.isAdmin">Add Product</v-btn>
             <template v-if="authStore.isLoggedIn">
                 <v-btn @click="authStore.logout">Logout</v-btn>
 <!--                <v-btn @click="showConsoleLog">test</v-btn>-->
             </template>
             <template v-else>
                 <v-btn to="/login">Login</v-btn>
-                <v-btn to="/register">Registrieren</v-btn>
+                <v-btn to="/register">Register</v-btn>
             </template>
         </v-toolbar-items>
     </v-app-bar>
-    <v-main>
-        <v-container>
+    <v-main class="bg-indigo-lighten-4">
+        <v-container fluid>
             <router-view/>
         </v-container>
     </v-main>

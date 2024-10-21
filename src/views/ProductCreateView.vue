@@ -11,6 +11,7 @@
   const productStore = useProductStore();
 
   function submit() {
+      console.log(imageUrl.value);
       productStore.addProduct({
           title: title.value,
           description: description.value,
@@ -58,6 +59,7 @@
                             v-model.number="price"
                             label="Price"
                             type="number"
+                            step="0000.01"
                             hide-details
                             required
                         ></v-text-field>
@@ -70,7 +72,6 @@
                             :counter="50"
                             label="Image URL"
                             hide-details
-                            required
                         ></v-text-field>
                     </v-col>
                     <v-btn class="mt-2" type="submit" block>Submit</v-btn>

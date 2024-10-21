@@ -16,7 +16,6 @@ const quantity = ref(1);
 
 onMounted(() => {
     productStore.loadProducts();
-    console.log(authStore.isUser)
     if (authStore.isUser) {
         cartStore.loadItems();
     }
@@ -48,16 +47,20 @@ function addToBasket() {
 </script>
 
 <template>
-    <h1 class="mb-5 text-center">Produkte</h1>
+    <h1 class="mb-8 text-center">Products</h1>
     <div v-if="!productStore.products.length" class="text-center ma-16">
         <h3>No Products available</h3>
     </div>
     <v-row>
-        <v-col cols="4" v-for="p in productStore.products">
-            <Product :product="p"/>
-            <v-btn :to="'/' + p.productId" v-if="authStore.isAdmin">Produkt bearbeiten</v-btn>
-            <v-btn v-if="authStore.isAdmin" @click="openModal(p.productId)">Produkt löschen</v-btn>
-            <v-btn v-if="authStore.isUser" @click="openBasketModal(p.productId)">zum Warenkorb hinzufügen</v-btn>
+        <v-col cols="12" lg="4" md="6" v-for="p in productStore.products">
+            <v-card
+                class="mx-auto bg-indigo-lighten-5 pb-2"
+            >
+                <Product class="mb-1" :product="p"/>
+                <v-btn variant="outlined" class="text-yellow-darken-4 bg-yellow-lighten-4 v-btn--size-large mx-4" :to="'/' + p.productId" v-if="authStore.isAdmin">Edit</v-btn>
+                <v-btn class="bg-red-darken-4 v-btn--size-large" v-if="authStore.isAdmin" @click="openModal(p.productId)">Delete</v-btn>
+                <v-btn class="bg-yellow-darken-1" v-if="authStore.isUser" @click="openBasketModal(p.productId)">Add to Basket</v-btn>
+            </v-card>
         </v-col>
     </v-row>
 
