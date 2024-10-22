@@ -57,9 +57,9 @@ function addToBasket() {
                 class="mx-auto bg-indigo-lighten-5 pb-2"
             >
                 <Product class="mb-1" :product="p"/>
-                <v-btn variant="outlined" class="text-yellow-darken-4 bg-yellow-lighten-4 v-btn--size-large mx-4" :to="'/' + p.productId" v-if="authStore.isAdmin">Edit</v-btn>
+                <v-btn class="bg-yellow-darken-4 v-btn--size-large mx-4" :to="'/' + p.productId" v-if="authStore.isAdmin">Edit</v-btn>
                 <v-btn class="bg-red-darken-4 v-btn--size-large" v-if="authStore.isAdmin" @click="openModal(p.productId)">Delete</v-btn>
-                <v-btn class="bg-yellow-darken-1" v-if="authStore.isUser" @click="openBasketModal(p.productId)">Add to Basket</v-btn>
+                <v-btn class="bg-yellow-darken-1 align-self-center mx-4" v-if="authStore.isUser" @click="openBasketModal(p.productId)">Add to Basket</v-btn>
             </v-card>
         </v-col>
     </v-row>

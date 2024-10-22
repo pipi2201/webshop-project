@@ -25,16 +25,18 @@ function deleteAll() {
 
 </script>
 <template>
-    <h1>Warenkorb</h1>
+    <h1 class="mb-8 text-center">Warenkorb</h1>
     <div v-if="!cartStore.cart?.items" class="text-center ma-16">
-        <h3>No Products in Cart</h3>
+        <h3 class="text-center">No Products in Cart</h3>
     </div>
-    <v-row>
-        <v-col cols="4" v-for="i in cartStore.cart?.items">
-            <CartItem :item="i"></CartItem>
+    <v-row justify="center">
+        <v-col cols="12" lg="4" md="6" v-for="i in cartStore.cart?.items">
+            <CartItem class="mb-1" :item="i"></CartItem>
         </v-col>
     </v-row>
-    <h3>Gesamtpreis: {{total}}€</h3>
-    <v-btn to="/Order">Bezahlen</v-btn>
-    <v-btn @click="deleteAll">Warenkorb Löschen</v-btn>
+    <h3 class="ma-8 text-center">Gesamtpreis: {{total}}€</h3>
+    <v-row justify="center">
+        <v-btn class="ms-8 bg-yellow-darken-3 v-btn--size-large" to="/Order">Bezahlen</v-btn>
+        <v-btn class="ms-8 bg-red-darken-4 v-btn--size-large" @click="deleteAll">Warenkorb Löschen</v-btn>
+    </v-row>
 </template>

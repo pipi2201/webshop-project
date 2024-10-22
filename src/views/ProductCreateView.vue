@@ -24,12 +24,12 @@
 </script>
 
 <template>
-    <h1>Produkt erstellen</h1>
+    <h1 class="text-center">Produkt erstellen</h1>
         <form @submit.prevent="submit">
             <v-container>
-                <v-row>
+                <v-row justify="center">
                     <v-col
-                        cols="12"
+                        cols="12" md="7"
                     >
                         <v-text-field
                             v-model="title"
@@ -41,7 +41,7 @@
                     </v-col>
 
                     <v-col
-                        cols="12"
+                        cols="12" md="7"
                     >
                         <v-text-field
                             v-model="description"
@@ -53,7 +53,7 @@
                     </v-col>
 
                     <v-col
-                        cols="12"
+                        cols="12" md="7"
                     >
                         <v-text-field
                             v-model.number="price"
@@ -65,7 +65,7 @@
                         ></v-text-field>
                     </v-col>
                     <v-col
-                        cols="12"
+                        cols="12" md="7"
                     >
                         <v-text-field
                             v-model="imageUrl"
@@ -74,7 +74,9 @@
                             hide-details
                         ></v-text-field>
                     </v-col>
-                    <v-btn class="mt-2" type="submit" block>Submit</v-btn>
+                    <v-col cols="12" md="7">
+                        <v-btn class="mt-2 bg-deep-purple-darken-3" type="submit" block>Submit</v-btn>
+                    </v-col>
                 </v-row>
             </v-container>
         </form>

@@ -11,6 +11,7 @@
   const productId = computed(() => parseInt(route.params.productId));
   const product = computed(() => productStore.products.find(p => p.productId === productId.value));
 
+  //TODO: error at get request!
   onMounted(() => {
       productStore.findProductById(productId.value);
   })
@@ -20,10 +21,10 @@
   const price = ref(null);
   const imageUrl = ref('');
 
-  title.value = product.value.title;
-  description.value = product.value.description;
-  price.value = product.value.price;
-  imageUrl.value = product.value.imageUrl;
+  title.value = product.value?.title;
+  description.value = product.value?.description;
+  price.value = product.value?.price;
+  imageUrl.value = product.value?.imageUrl;
 
   function update() {
       productStore.updateProduct(productId.value, {
@@ -43,7 +44,7 @@
         <v-container>
             <v-row>
                 <v-col
-                    cols="12"
+                    cols="12" md="7"
                 >
                     <v-text-field
                         v-model="title"
@@ -55,7 +56,7 @@
                 </v-col>
 
                 <v-col
-                    cols="12"
+                    cols="12" md="7"
                 >
                     <v-text-field
                         v-model="description"
@@ -67,7 +68,7 @@
                 </v-col>
 
                 <v-col
-                    cols="12"
+                    cols="12" md="7"
                 >
                     <v-text-field
                         v-model.number="price"
@@ -79,7 +80,7 @@
                     ></v-text-field>
                 </v-col>
                 <v-col
-                    cols="12"
+                    cols="12" md="7"
                 >
                     <v-text-field
                         v-model="imageUrl"
@@ -88,7 +89,9 @@
                         hide-details
                     ></v-text-field>
                 </v-col>
-                <v-btn class="mt-2" type="submit" block>Ändern</v-btn>
+                <v-col cols="12" md="7">
+                    <v-btn class="mt-2 bg-deep-purple-darken-3" type="submit" block>Edit</v-btn>
+                </v-col>
             </v-row>
         </v-container>
     </form>

@@ -53,24 +53,25 @@ function deleteCartItem() {
 //https://images.unsplash.com/photo-1728935367997-d9dd04a4d447?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw4fHx8ZW58MHx8fHx8
 <template>
     <v-card
-        class="mx-auto ma-2"
-        width="300"
-        height="300"
+        class="mx-auto bg-indigo-lighten-5 ma-2"
+        min-height="20em"
     >
         <template v-slot:title>
-            <span class="font-weight-black">{{product?.title}}</span>
+            <span class="font-weight-black text-center">{{product?.title}}</span>
         </template>
         <v-img
             :src="product?.imageUrl"
             alt="Product Image"
             height="150"
         ></v-img>
-        <v-card-text class="bg-surface-light pt-4">
+        <v-card-text class="bg-surface-light pt-4 text-center">
             <p>Comment: {{item.remark}}</p>
             <p>Quantity: {{item.amount}}</p>
         </v-card-text>
-        <v-btn @click="openModal">Bearbeiten</v-btn>
-        <v-btn @click="openDeleteModal">Löschen</v-btn>
+        <v-row justify="center">
+            <v-btn class="bg-yellow-darken-4 mx-4" @click="openModal">Bearbeiten</v-btn>
+            <v-btn class="bg-red-darken-4" @click="openDeleteModal">Löschen</v-btn>
+        </v-row>
     </v-card>
     <v-dialog v-model="basketModalVisible" max-width="300px">
         <v-card>
